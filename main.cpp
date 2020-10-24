@@ -3,6 +3,8 @@
 
 using namespace std;
 
+//Homework ¹1
+
 class Power
 {
 private:
