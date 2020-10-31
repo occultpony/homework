@@ -1,143 +1,110 @@
 #include <iostream>
-#include <cstdint>
 
 using namespace std;
 
-//Homework №1
+//Homework №2
 
-class Power
+//TASK 1
+class Person
 {
-private:
-    int number = 1;
-    int power = 1;
+protected:
+    string name;
+    int age;
+    const bool isMale;
+    float weight;
 public:
-    void set(int num, int pow)
-    {
-        number = num;
-        power = pow;
-    }
+    Person(): name("[DATA LOST]"), age(20), isMale(true), weight(62.5) {};
+    Person(string n_name, int n_age, bool n_isMale, float n_weight) : name(n_name), age(n_age), isMale(n_isMale), weight(n_weight){};
 
-    void calculate()
-    {
-        int result = number;
-        if(power == 0) result = 1;
-        else
-        {
-            for(int i=1; i<power; i++)
-            {
-            result = result * number;
-            }
-        }
-        //я хотела использовать здесь тернарный условный оператор как в Си, но компилятор ругается
-        if(power<0) cout << "x power y equal " << "1/" << result << endl;
-        else cout << "x power y equal " << result << endl;
-    }
+    string getName() const{ return name; }
+    void setName(string newName) {name = newName;}
+
+    int getAge() const { return age; }
+    void setAge(int newAge) {name = newAge;}
+
+    bool getGender() const { return isMale; }
+
+    float getWeight() const { return weight; }
+    void setWeight(float newWeight) {weight = newWeight; }
 };
 
-class RGBA
+class Student : public Person
 {
 private:
-    std::uint8_t m_red = 0;
-    std::uint8_t m_green = 0;
-    std::uint8_t m_blue = 0;
-    std::uint8_t m_alpha = 255;
+protected:
+    int yearOfStudy;
 public:
-    RGBA(){}
-    RGBA(std::uint8_t red, std::uint8_t green, std::uint8_t blue, std::uint8_t alpha)
-    : m_red(red), m_green(green), m_blue(blue), m_alpha(alpha) {}
+    Student(): Person(), yearOfStudy(0){};
+    Student(string n_name, int n_age, bool n_isMale, float n_weight, int n_yearOfStudy): Person(n_name, n_age, n_isMale, n_weight), yearOfStudy(n_yearOfStudy){};
 
-    void print()
+    ~Student(){};
+
+    void printStudent()
     {
-        cout << "R:" << m_red + 0<< " G:" << m_green + 0<< " B:" << m_blue + 0 << " A:" << m_alpha + 0 << endl;
+        cout << "Name: " << name << " Gender: ";
+        isMale ? cout << "Male" : cout << "Female";
+        cout << " Weight: " << weight << " Year of study: " << yearOfStudy << endl;
     }
+
+    int getYearOfStudy() const { return yearOfStudy; }
+    void setYearOfStudy(int newYear) {yearOfStudy = newYear; }
+    void increaseYearOfStudy() { yearOfStudy++; }
 };
 
-class Stack
+    //TASK 2
+
+class Fruit
 {
-private:
-    int M[9];
-    unsigned int lenght;
+protected:
+    string name;
+    string color;
 public:
-    void reset()
-    {
-        for(int i = 0; i<10; i++) M[i]=0;
-        lenght = 0;
-    }
-    bool push(int n)
-    {
-        if(lenght==10) return false;
-        else M[lenght] = n;
-        lenght++;
-        return true;
-    }
-    int pop()
-    {
-        if(lenght==0) cout << "Stack is empty" << endl;
-        else return M[lenght];
-    }
-    void print()
-    {
-        cout << "( ";
-        for(int i=0; i<lenght; i++) cout << M[i] << " ";
-        cout << ")" << endl;
-    }
+    Fruit():name("fruit"), color("colorless"){};
+    Fruit(string n_name, string n_color):name(n_name), color(n_color){};
+
+    string getName(){ return name; }
+    string getColor(){ return color; }
+
+};
+
+class Apple : public Fruit
+{
+public:
+    Apple():Fruit("apple", "[DATA LOST]"){};
+    Apple(string n_color):Fruit("apple", n_color){};
+    Apple(string n_name, string n_color):Fruit(n_name, n_color){};
+};
+
+class Banana : public Fruit
+{
+public:
+    Banana():Fruit("banana", "yellow"){};
+};
+
+class GrannySmith : public Apple
+{
+public:
+    GrannySmith():Apple("Granny Smith apple","green"){};
 };
 
 int main()
 {
     //TASK 1
-    Power Power;
-    int x, y;
-    cout << "  1.\nEnter x: ";
-    cin >> x;
-    cout << "Enter y: ";
-    cin >> y;
-    Power.set(x,y);
-    Power.calculate();
+    Student s1("Ivan", 21, true, 70, 3);
+    Student s2("Maria", 18, false, 58, 1);
+    Student s3("Daniil", 23, true, 65, 5);
+    s1.printStudent();
+    s2.printStudent();
+    s3.printStudent();
 
     //TASK 2
-    char answer;
-    cout << "  2.\nWould you like to initialize RGBA with custom parameters?(y/n)" << endl;
-    cin >> answer;
-    if(answer == 'y')
-    {
-        unsigned int r, g, b, a;
-        cout << "Enter R: ";
-        cin >> r;
-        cout << "Enter G: ";
-        cin >> g;
-        cout << "Enter B: ";
-        cin >> b;
-        cout << "Enter A: ";
-        cin >> a;
-        RGBA color((std::uint8_t)r, (std::uint8_t)g, (std::uint8_t)b, (std::uint8_t)a);
-        color.print();
-    }
-    else if(answer == 'n')
-    {
-        RGBA color;
-        color.print();
-    }
+    Apple a("red");
+    Banana b;
+    GrannySmith c;
 
-    //TASK 3
-    cout << "  3." << endl;
-
-    Stack stack;
-    stack.reset();
-    stack.print();
-
-    stack.push(3);
-    stack.push(7);
-    stack.push(5);
-    stack.print();
-
-    stack.pop();
-    stack.print();
-
-    stack.pop();
-    stack.pop();
-    stack.print();
-
+    cout << "My " << a.getName() << " is " << a.getColor() << ".\n";
+    cout << "My " << b.getName() << " is " << b.getColor() << ".\n";
+    cout << "My " << c.getName() << " is " << c.getColor() << ".\n";
 
     return 0;
 }
